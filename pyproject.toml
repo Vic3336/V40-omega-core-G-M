@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gema-orquestador"
+version = "1.0.0"
+description = "Motor descentralizado de alta velocidad y baja latencia para procesamiento binario y telemetría BCI/EEG"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+    { name = "VICTOR MANUEL ORTEGA SMITH" }
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Operating System :: POSIX :: Linux",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+dependencies = [
+    "fastapi>=0.100.0",
+    "uvicorn[standard]>=0.22.0",
+    "websockets>=11.0",
+    "pydantic>=2.0.0",
+    "orjson>=3.9.0",
+    "lz4>=4.3.0",
+    "numpy>=1.24.0",
+    "scipy>=1.10.0"
+]
+
+[project.scripts]
+gema-v40 = "gema_orquestador.main:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["gema_orquestador*"]
