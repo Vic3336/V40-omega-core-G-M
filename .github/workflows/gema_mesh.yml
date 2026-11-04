@@ -1,0 +1,42 @@
+name: V40 MESH CORE - Ejecución de Malla Descentralizada en la Nube
+
+on:
+  # Permite lanzar la malla manualmente con un solo clic desde la pestaña "Actions" de GitHub
+  workflow_dispatch:
+    inputs:
+      target_host:
+        description: 'Dirección IP o URL del nodo Master'
+        required: true
+        default: '127.0.0.1'
+      node_count:
+        description: 'Número de nodos concurrentes en paralelo'
+        required: true
+        default: '5'
+
+jobs:
+  run-mesh:
+    runs-on: ubuntu-latest # Ejecución directa sobre Linux nativo de alta velocidad
+
+    steps:
+    # 1. Clonar el código del repositorio actual en el contenedor virtual
+    - name: Clonar Repositorio
+      uses: actions/checkout@v4
+
+    # 2. Configurar el entorno de ejecución asíncrono con Python 3.10
+    - name: Configurar Python 3.10
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+        cache: 'pip' # Acelera la compilación en ejecuciones subsecuentes
+
+    # 3. Instalar y empaquetar formalmente la gema de manera nativa (PEP 518/621)
+    - name: Compilar e Instalar Gema
+      run: |
+        python -m pip install --upgrade pip
+        pip install -e .
+
+    # 4. Lanzar el plano de datos asíncrono con firmas HMAC y compresión LZ4
+    - name: Despachar Malla Descentralizada
+      run: |
+        gema-v40 mesh --host "${{ github.event.inputs.target_host }}" --nodes ${{ github.event.inputs.node_count }}
+        
